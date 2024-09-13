@@ -1,7 +1,7 @@
-import 'package:carousel/models/playoff.dart';
 import 'package:carousel/utils/sizing.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/play_off.dart';
 
 class PlayOffWidget extends StatelessWidget {
   final PlayOff playOff;
@@ -18,14 +18,25 @@ class PlayOffWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          playOff.title,
-          style: TextStyle(
-            color: Theme.of(context).highlightColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text:
+                '${playOff.championshipType} . ${playOff.competitionLevel} . Group ${playOff.group}',
+            style: TextStyle(
+              color: Theme.of(context).highlightColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: '\n Day ${playOff.matchDay}',
+                style: TextStyle(color: Theme.of(context).highlightColor),
+              ),
+            ],
           ),
         ),
+
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -34,12 +45,12 @@ class PlayOffWidget extends StatelessWidget {
             Column(
               children: [
                 Image.asset(
-                  playOff.time1Flag,
+                  playOff.homeFlag,
                   width: 50,
                   height: 50,
                 ),
                 Text(
-                  playOff.time1Name,
+                  playOff.homeTeam,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.8),
                     fontWeight: FontWeight.w700,
@@ -49,22 +60,22 @@ class PlayOffWidget extends StatelessWidget {
               ],
             ),
             Text(
-              playOff.status != 'finished' ? 'Versus' : '0 : 0',
+              '${playOff.homeScore} : ${playOff.awayScore}',
               style: TextStyle(
-                color: Colors.white.withOpacity(0.6),
-                fontWeight: FontWeight.normal,
-                fontSize: 15,
+                color: Colors.white.withOpacity(0.9),
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
               ),
             ),
             Column(
               children: [
                 Image.asset(
-                  playOff.time2Flag,
+                  playOff.awayFlag,
                   width: 50,
                   height: 50,
                 ),
                 Text(
-                  playOff.time2Name,
+                  playOff.awayTeam,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.8),
                     fontWeight: FontWeight.w700,
@@ -75,62 +86,98 @@ class PlayOffWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        Align(
-          alignment: Alignment.center,
-          child: Text(
-            playOff.subtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).highlightColor,
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-            ),
+        const SizedBox(height: 5),
+        Container(
+          width: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30), color: Colors.white),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 3,
+                backgroundColor: Colors.greenAccent,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Text(
+                      '88',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.greenAccent,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Positioned(
+                      top: -3,
+                      right: -3,
+                      child: Text(
+                        "'",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.greenAccent,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 10),
-        if (showPlace)
-          RichText(
-            text: TextSpan(
-              text: 'Lieu : ',
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                    color: Colors.greenAccent,
-                    fontSize: 14,
-                  ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: playOff.place,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight),
-                ),
-              ],
-            ),
-          ),
-        const SizedBox(height: 10),
-        
-        Container(
-          width: AppSizing.width(context) * 0.4,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: Theme.of(context).highlightColor,
-              ),
-              color: Colors.transparent),
+        const SizedBox(height: 15),
+        Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/icons/ball.png',
+              width: 20,
+              height: 20,
+              color: Theme.of(context).highlightColor,
+            )),
+        SizedBox(
+          width: AppSizing.width(context) * 0.7,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                CupertinoIcons.ticket_fill,
-                size: 24,
-                color: Theme.of(context).primaryColorLight,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  playOff.homeScorer.length,
+                  (index) => Text(
+                    playOff.homeScorer[index],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).highlightColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(width: 10),
-              Text(
-                'buy tickets',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  playOff.awayScorer.length,
+                  (index) => Text(
+                    playOff.awayScorer[index],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).highlightColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
             ],

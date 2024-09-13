@@ -7,9 +7,11 @@ class CircleButton extends StatefulWidget {
   final String icon;
   final String? title;
   final Color? color;
+  final double? radius;
   final void Function()? onTap;
 
-  const CircleButton({super.key, required this.icon, this.color, this.title, this.onTap});
+  const CircleButton(
+      {super.key, required this.icon, this.color, this.title, this.onTap, this.radius});
 
   @override
   State<CircleButton> createState() => _CircleButtonState();
@@ -24,7 +26,7 @@ class _CircleButtonState extends State<CircleButton> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            radius: 28,
+            radius: widget.radius ?? 28,
             backgroundColor: Theme.of(context).highlightColor,
             child: Padding(
               padding: const EdgeInsets.all(8.0),

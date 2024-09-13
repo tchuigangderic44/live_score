@@ -1,8 +1,9 @@
-import 'package:carousel/models/playoff.dart';
 import 'package:carousel/screens/card_details.dart';
 import 'package:carousel/screens/components/match.dart';
 import 'package:carousel/utils/sizing.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/play_off.dart';
 
 class MatchCard extends StatelessWidget {
   final int index;
